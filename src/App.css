@@ -26,4 +26,23 @@ font-family: 'Open Sans', sans-serif !important;
 background: var(--mainGrey);
 color:var(--mainBlack);
 }
-
+.main-link
+{
+  background:var(--primaryColor);
+  padding:0.5rem 1rem;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing:var(--mainSpacing);
+  outline:2px solid var(--primaryColor);
+  outline-offset:4px;
+  color:var(--mainWhite);
+  border:none;
+  transition:var(--mainTransition);
+  font-size:1.2rem;
+}
+.main-link:hover{
+  background:var(--darkGrey);
+  text-decoration: none;
+  color:var(--primaryColor);
+ outline-color: var(--darkGrey);
+}
