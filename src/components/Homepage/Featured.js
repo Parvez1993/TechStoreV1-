@@ -9,7 +9,7 @@ export default function Featured() {
 		<div className="py-5">
 			<div className="container">
 				<Title title="Featured Products" center="true"></Title>
-				<div className="row">
+				<div className="row my-5">
 					<ProductConsumer>
 						{(value) => {
 							const { featuredProducts } = value;
