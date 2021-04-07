@@ -5,6 +5,7 @@ export default function CartList() {
 		<div>
 			CartList
 			<CartItem />
+			<h1>ok</h1>
 		</div>
 	);
 }
