@@ -6,18 +6,18 @@ export default function CartTotal() {
 			<div className="row">
 				<ProductConsumer>
 					{(value) => {
-						const { cartTotal, cartTax, cartSubTotal, clearCart } = value;
+						const { cartTotal, cartTax, cartSubTotal, clearAll } = value;
 						return (
 							<div className="col text-center text-title my-5">
 								<button
 									className="btn btn-outline-danger mb-4"
-									onClick={clearCart}
+									onClick={clearAll}
 								>
 									<h3>Clear Cart</h3>
 								</button>
-								<h3>subTotal: {cartSubTotal}</h3>
-								<h3>tax: {cartTax}</h3>
-								<h3>Total: {cartTotal}</h3>
+								<h3>subTotal: ${cartSubTotal}</h3>
+								<h3>tax: ${cartTax}</h3>
+								<h3>Total: ${cartTotal}</h3>
 							</div>
 						);
 					}}
