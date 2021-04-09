@@ -8,7 +8,7 @@ const ProductContext = React.createContext();
 class ProductProvider extends Component {
 	state = {
 		sidebarOpen: false,
-		cartOpen: true,
+		cartOpen: false,
 		links: linkData,
 		cart: [],
 		socialLinks: socialData,
@@ -20,6 +20,12 @@ class ProductProvider extends Component {
 		featuredProducts: [],
 		singleProducts: {},
 		loading: true,
+		search: "",
+		price: 0,
+		min: 0,
+		max: 0,
+		company: "all",
+		shipping: "false",
 	};
 	componentDidMount() {
 		//from contentful items
@@ -39,6 +45,8 @@ class ProductProvider extends Component {
 		let featuredProducts = storeProducts.filter(
 			(item) => item.featured === true
 		);
+		// get max price
+		let maxPrice = Math.max(...storeProducts.map((item) => item.price));
 		this.setState(
 			{
 				storeProducts,
@@ -47,6 +55,8 @@ class ProductProvider extends Component {
 				cart: this.getStorageCart(),
 				singleProduct: this.getStorageProduct(),
 				loading: false,
+				price: maxPrice,
+				max: maxPrice,
 			},
 			() => {
 				this.addTotals();
@@ -225,6 +235,43 @@ class ProductProvider extends Component {
 			}
 		);
 	};
+	handleChange = (event) => {
+		const name = event.target.name;
+		const value =
+			event.target.type === "checkbox"
+				? event.target.checked
+				: event.target.value;
+		this.setState(
+			{
+				[name]: value,
+			},
+			this.sortData
+		);
+	};
+	sortData = () => {
+		const { storeProducts, price, company, shipping, search } = this.state;
+		let tempPrice = parseInt(price);
+		let tempProducts = [...storeProducts];
+		tempProducts = tempProducts.filter((item) => item.price <= tempPrice);
+		if (company !== "all") {
+			tempProducts = tempProducts.filter((item) => item.company === company);
+		}
+		if (shipping) {
+			tempProducts = tempProducts.filter((item) => item.freeShipping === true);
+		}
+		if (search.length > 0) {
+			tempProducts = tempProducts.filter((item) => {
+				let tempSearch = search.toLowerCase();
+				let tempTitle = item.title.toLowerCase().slice(0, search.length);
+				if (tempSearch === tempTitle) {
+					return item;
+				}
+			});
+		}
+		this.setState({
+			filteredProducts: tempProducts,
+		});
+	};
 
 	render() {
 		return (
@@ -241,6 +288,7 @@ class ProductProvider extends Component {
 					decrement: this.decrement,
 					removeItem: this.removeItem,
 					clearAll: this.clearAll,
+					handleChange: this.handleChange,
 				}}
 			>
 				{this.props.children}
